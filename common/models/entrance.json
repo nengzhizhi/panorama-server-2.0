@@ -1,0 +1,11 @@
+{
+  "name": "Entrance",
+  "plural": "ls",
+  "base": "PersistedModel",
+  "properties": {
+  },
+  "relations": {
+  },
+  "acls": [],
+  "method": []
+}
