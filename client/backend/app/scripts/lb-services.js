@@ -3,6 +3,13 @@
 var urlBase = "/api";
 var authHeader = 'authorization';
 
+function getHost(url) {
+  var m = url.match(/^(?:https?:)?\/\/([^\/]+)/);
+  return m ? m[1] : null;
+}
+
+var urlBaseHost = getHost(urlBase) || location.host;
+
 /**
  * @ngdoc overview
  * @name lbServices
@@ -1127,9 +1134,61 @@ module.factory(
   "Entrance",
   ['LoopBackResource', 'LoopBackAuth', '$injector', function(Resource, LoopBackAuth, $injector) {
     var R = Resource(
-      urlBase + "/ls/:id",
+      urlBase + "/entrance/:id",
       { 'id': '@id' },
       {
+
+        // INTERNAL. Use Entrance.hotpots.findById() instead.
+        "prototype$__findById__hotpots": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/entrance/:id/hotpots/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.destroyById() instead.
+        "prototype$__destroyById__hotpots": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/entrance/:id/hotpots/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.updateById() instead.
+        "prototype$__updateById__hotpots": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/entrance/:id/hotpots/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Entrance.hotpots() instead.
+        "prototype$__get__hotpots": {
+          isArray: true,
+          url: urlBase + "/entrance/:id/hotpots",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.create() instead.
+        "prototype$__create__hotpots": {
+          url: urlBase + "/entrance/:id/hotpots",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.destroyAll() instead.
+        "prototype$__delete__hotpots": {
+          url: urlBase + "/entrance/:id/hotpots",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.count() instead.
+        "prototype$__count__hotpots": {
+          url: urlBase + "/entrance/:id/hotpots/count",
+          method: "GET"
+        },
 
         /**
          * @ngdoc method
@@ -1165,7 +1224,7 @@ module.factory(
          * </em>
          */
         "create": {
-          url: urlBase + "/ls",
+          url: urlBase + "/entrance",
           method: "POST"
         },
 
@@ -1204,7 +1263,7 @@ module.factory(
          */
         "createMany": {
           isArray: true,
-          url: urlBase + "/ls",
+          url: urlBase + "/entrance",
           method: "POST"
         },
 
@@ -1242,7 +1301,7 @@ module.factory(
          * </em>
          */
         "upsert": {
-          url: urlBase + "/ls",
+          url: urlBase + "/entrance",
           method: "PUT"
         },
 
@@ -1274,7 +1333,7 @@ module.factory(
          *  - `exists` – `{boolean=}` - 
          */
         "exists": {
-          url: urlBase + "/ls/:id/exists",
+          url: urlBase + "/entrance/:id/exists",
           method: "GET"
         },
 
@@ -1309,7 +1368,7 @@ module.factory(
          * </em>
          */
         "findById": {
-          url: urlBase + "/ls/:id",
+          url: urlBase + "/entrance/:id",
           method: "GET"
         },
 
@@ -1343,7 +1402,7 @@ module.factory(
          */
         "find": {
           isArray: true,
-          url: urlBase + "/ls",
+          url: urlBase + "/entrance",
           method: "GET"
         },
 
@@ -1376,7 +1435,7 @@ module.factory(
          * </em>
          */
         "findOne": {
-          url: urlBase + "/ls/findOne",
+          url: urlBase + "/entrance/findOne",
           method: "GET"
         },
 
@@ -1410,7 +1469,7 @@ module.factory(
          * The number of instances updated
          */
         "updateAll": {
-          url: urlBase + "/ls/update",
+          url: urlBase + "/entrance/update",
           method: "POST"
         },
 
@@ -1443,7 +1502,7 @@ module.factory(
          * </em>
          */
         "deleteById": {
-          url: urlBase + "/ls/:id",
+          url: urlBase + "/entrance/:id",
           method: "DELETE"
         },
 
@@ -1475,7 +1534,7 @@ module.factory(
          *  - `count` – `{number=}` - 
          */
         "count": {
-          url: urlBase + "/ls/count",
+          url: urlBase + "/entrance/count",
           method: "GET"
         },
 
@@ -1512,7 +1571,7 @@ module.factory(
          * </em>
          */
         "prototype$updateAttributes": {
-          url: urlBase + "/ls/:id",
+          url: urlBase + "/entrance/:id",
           method: "PUT"
         },
 
@@ -1549,8 +1608,14 @@ module.factory(
          *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
-          url: urlBase + "/ls/change-stream",
+          url: urlBase + "/entrance/change-stream",
           method: "POST"
+        },
+
+        // INTERNAL. Use Hotspot.entrance() instead.
+        "::get::Hotspot::entrance": {
+          url: urlBase + "/hotspot/:id/entrance",
+          method: "GET"
         },
       }
     );
@@ -1694,6 +1759,1000 @@ module.factory(
     */
     R.modelName = "Entrance";
 
+    /**
+     * @ngdoc object
+     * @name lbServices.Entrance.hotpots
+     * @header lbServices.Entrance.hotpots
+     * @object
+     * @description
+     *
+     * The object `Entrance.hotpots` groups methods
+     * manipulating `Hotspot` instances related to `Entrance`.
+     *
+     * Call {@link lbServices.Entrance#hotpots Entrance.hotpots()}
+     * to query all related instances.
+     */
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Entrance#hotpots
+         * @methodOf lbServices.Entrance
+         *
+         * @description
+         *
+         * Queries hotpots of Entrance.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `filter` – `{object=}` - 
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        R.hotpots = function() {
+          var TargetResource = $injector.get("Hotspot");
+          var action = TargetResource["::get::Entrance::hotpots"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Entrance.hotpots#count
+         * @methodOf lbServices.Entrance.hotpots
+         *
+         * @description
+         *
+         * Counts hotpots of Entrance.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        R.hotpots.count = function() {
+          var TargetResource = $injector.get("Hotspot");
+          var action = TargetResource["::count::Entrance::hotpots"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Entrance.hotpots#create
+         * @methodOf lbServices.Entrance.hotpots
+         *
+         * @description
+         *
+         * Creates a new instance in hotpots of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        R.hotpots.create = function() {
+          var TargetResource = $injector.get("Hotspot");
+          var action = TargetResource["::create::Entrance::hotpots"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Entrance.hotpots#createMany
+         * @methodOf lbServices.Entrance.hotpots
+         *
+         * @description
+         *
+         * Creates a new instance in hotpots of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        R.hotpots.createMany = function() {
+          var TargetResource = $injector.get("Hotspot");
+          var action = TargetResource["::createMany::Entrance::hotpots"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Entrance.hotpots#destroyAll
+         * @methodOf lbServices.Entrance.hotpots
+         *
+         * @description
+         *
+         * Deletes all hotpots of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.hotpots.destroyAll = function() {
+          var TargetResource = $injector.get("Hotspot");
+          var action = TargetResource["::delete::Entrance::hotpots"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Entrance.hotpots#destroyById
+         * @methodOf lbServices.Entrance.hotpots
+         *
+         * @description
+         *
+         * Delete a related item by id for hotpots.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for hotpots
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.hotpots.destroyById = function() {
+          var TargetResource = $injector.get("Hotspot");
+          var action = TargetResource["::destroyById::Entrance::hotpots"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Entrance.hotpots#findById
+         * @methodOf lbServices.Entrance.hotpots
+         *
+         * @description
+         *
+         * Find a related item by id for hotpots.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for hotpots
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        R.hotpots.findById = function() {
+          var TargetResource = $injector.get("Hotspot");
+          var action = TargetResource["::findById::Entrance::hotpots"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Entrance.hotpots#updateById
+         * @methodOf lbServices.Entrance.hotpots
+         *
+         * @description
+         *
+         * Update a related item by id for hotpots.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for hotpots
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        R.hotpots.updateById = function() {
+          var TargetResource = $injector.get("Hotspot");
+          var action = TargetResource["::updateById::Entrance::hotpots"];
+          return action.apply(R, arguments);
+        };
+
+    return R;
+  }]);
+
+/**
+ * @ngdoc object
+ * @name lbServices.Hotspot
+ * @header lbServices.Hotspot
+ * @object
+ *
+ * @description
+ *
+ * A $resource object for interacting with the `Hotspot` model.
+ *
+ * ## Example
+ *
+ * See
+ * {@link http://docs.angularjs.org/api/ngResource.$resource#example $resource}
+ * for an example of using this object.
+ *
+ */
+module.factory(
+  "Hotspot",
+  ['LoopBackResource', 'LoopBackAuth', '$injector', function(Resource, LoopBackAuth, $injector) {
+    var R = Resource(
+      urlBase + "/hotspot/:id",
+      { 'id': '@id' },
+      {
+
+        // INTERNAL. Use Hotspot.entrance() instead.
+        "prototype$__get__entrance": {
+          url: urlBase + "/hotspot/:id/entrance",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#create
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Create a new instance of the model and persist it into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        "create": {
+          url: urlBase + "/hotspot",
+          method: "POST"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#createMany
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Create a new instance of the model and persist it into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        "createMany": {
+          isArray: true,
+          url: urlBase + "/hotspot",
+          method: "POST"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#upsert
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Update an existing model instance or insert a new one into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        "upsert": {
+          url: urlBase + "/hotspot",
+          method: "PUT"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#exists
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Check whether a model instance exists in the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `exists` – `{boolean=}` - 
+         */
+        "exists": {
+          url: urlBase + "/hotspot/:id/exists",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#findById
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Find a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         *  - `filter` – `{object=}` - Filter defining fields and include
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        "findById": {
+          url: urlBase + "/hotspot/:id",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#find
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Find all instances of the model matched by filter from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `filter` – `{object=}` - Filter defining fields, where, include, order, offset, and limit
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        "find": {
+          isArray: true,
+          url: urlBase + "/hotspot",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#findOne
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Find first instance of the model matched by filter from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `filter` – `{object=}` - Filter defining fields, where, include, order, offset, and limit
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        "findOne": {
+          url: urlBase + "/hotspot/findOne",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#updateAll
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Update instances of the model matched by where from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * The number of instances updated
+         */
+        "updateAll": {
+          url: urlBase + "/hotspot/update",
+          method: "POST"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#deleteById
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Delete a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        "deleteById": {
+          url: urlBase + "/hotspot/:id",
+          method: "DELETE"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#count
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Count instances of the model matched by where from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        "count": {
+          url: urlBase + "/hotspot/count",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#prototype$updateAttributes
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Update attributes for a model instance and persist it into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        "prototype$updateAttributes": {
+          url: urlBase + "/hotspot/:id",
+          method: "PUT"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#createChangeStream
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Create a change stream.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         *  - `options` – `{object=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `changes` – `{ReadableStream=}` - 
+         */
+        "createChangeStream": {
+          url: urlBase + "/hotspot/change-stream",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.findById() instead.
+        "::findById::Entrance::hotpots": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/entrance/:id/hotpots/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.destroyById() instead.
+        "::destroyById::Entrance::hotpots": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/entrance/:id/hotpots/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.updateById() instead.
+        "::updateById::Entrance::hotpots": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/entrance/:id/hotpots/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Entrance.hotpots() instead.
+        "::get::Entrance::hotpots": {
+          isArray: true,
+          url: urlBase + "/entrance/:id/hotpots",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.create() instead.
+        "::create::Entrance::hotpots": {
+          url: urlBase + "/entrance/:id/hotpots",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.createMany() instead.
+        "::createMany::Entrance::hotpots": {
+          isArray: true,
+          url: urlBase + "/entrance/:id/hotpots",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.destroyAll() instead.
+        "::delete::Entrance::hotpots": {
+          url: urlBase + "/entrance/:id/hotpots",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Entrance.hotpots.count() instead.
+        "::count::Entrance::hotpots": {
+          url: urlBase + "/entrance/:id/hotpots/count",
+          method: "GET"
+        },
+      }
+    );
+
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#updateOrCreate
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Update an existing model instance or insert a new one into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        R["updateOrCreate"] = R["upsert"];
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#update
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Update instances of the model matched by where from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * The number of instances updated
+         */
+        R["update"] = R["updateAll"];
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#destroyById
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Delete a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        R["destroyById"] = R["deleteById"];
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#removeById
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Delete a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Hotspot` object.)
+         * </em>
+         */
+        R["removeById"] = R["deleteById"];
+
+
+    /**
+    * @ngdoc property
+    * @name lbServices.Hotspot#modelName
+    * @propertyOf lbServices.Hotspot
+    * @description
+    * The name of the model represented by this $resource,
+    * i.e. `Hotspot`.
+    */
+    R.modelName = "Hotspot";
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Hotspot#entrance
+         * @methodOf lbServices.Hotspot
+         *
+         * @description
+         *
+         * Fetches belongsTo relation entrance.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Entrance` object.)
+         * </em>
+         */
+        R.entrance = function() {
+          var TargetResource = $injector.get("Entrance");
+          var action = TargetResource["::get::Hotspot::entrance"];
+          return action.apply(R, arguments);
+        };
 
     return R;
   }]);
@@ -1701,7 +2760,7 @@ module.factory(
 
 module
   .factory('LoopBackAuth', function() {
-    var props = ['accessTokenId', 'currentUserId'];
+    var props = ['accessTokenId', 'currentUserId', 'rememberMe'];
     var propsPrefix = '$LoopBack$';
 
     function LoopBackAuth() {
@@ -1709,7 +2768,6 @@ module
       props.forEach(function(name) {
         self[name] = load(name);
       });
-      this.rememberMe = undefined;
       this.currentUserData = null;
     }
 
@@ -1763,8 +2821,9 @@ module
       return {
         'request': function(config) {
 
-          // filter out non urlBase requests
-          if (config.url.substr(0, urlBase.length) !== urlBase) {
+          // filter out external requests
+          var host = getHost(config.url);
+          if (host && host !== urlBaseHost) {
             return config;
           }
 
@@ -1832,6 +2891,7 @@ module
      */
     this.setUrlBase = function(url) {
       urlBase = url;
+      urlBaseHost = getHost(urlBase) || location.host;
     };
 
     /**

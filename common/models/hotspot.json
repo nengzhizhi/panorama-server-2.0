@@ -1,0 +1,17 @@
+{
+  "name": "Hotspot",
+  "plural": "hotspot",
+  "base": "PersistedModel",
+  "properties": {
+  },
+  "relations": {
+    "entrance": {
+      "type": "belongsTo",
+      "model": "Entrance",
+      "foreignKey": "entranceId",
+      "required": true
+    }
+  },
+  "acls": [],
+  "method": []
+}

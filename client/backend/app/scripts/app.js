@@ -16,6 +16,7 @@
       'monospaced.qrcode',
       'com.module.core',
       'com.module.users',
-      'com.module.entrance'
+      'com.module.entrance',
+      'com.module.hotspot'
     ])
 })();

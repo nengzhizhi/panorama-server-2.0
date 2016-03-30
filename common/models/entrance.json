@@ -1,10 +1,16 @@
 {
   "name": "Entrance",
-  "plural": "ls",
+  "plural": "entrance",
   "base": "PersistedModel",
   "properties": {
   },
   "relations": {
+  	"hotpots": {
+      "type": "hasMany",
+      "model": "Hotspot",
+      "foreignKey": "entranceId",
+      "required": true  		
+  	}
   },
   "acls": [],
   "method": []

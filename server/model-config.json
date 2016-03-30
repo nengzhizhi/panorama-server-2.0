@@ -36,5 +36,9 @@
   "Entrance": {
     "dataSource": "mongodb",
     "public": true
-  }
+  },
+  "Hotspot": {
+    "dataSource": "mongodb",
+    "public": true
+  }  
 }

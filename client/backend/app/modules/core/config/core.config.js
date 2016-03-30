@@ -22,7 +22,6 @@
 				wrapper: ['label'],
 				defaultOptions(options) {
 					var ngOptions = options.templateOptions.ngOptions || `option[to.valueProp || 'value'] as option[to.labelProp || 'name'] group by option[to.groupProp || 'group'] for option in to.options`;					
-					console.log(ngOptions);
 					return {
 					  ngModelAttrs: {
 					    [ngOptions]: {
@@ -32,14 +31,6 @@
 					};
 				}
 			})
-
-			// formlyConfig.setType({
-			// 	name: 'datePicker',
-			// 	template: '',
-			// 	defaultOptions(options){
-					
-			// 	}
-			// })
 
 			$rootScope.domainUrl = "http://localhost";
 		})

@@ -27,9 +27,6 @@ module.exports = function (app) {
           }, callback);
         });
       }, function (err) {
-        if (!!err) {
-          console.log(err);
-        }
       })
     })
   }

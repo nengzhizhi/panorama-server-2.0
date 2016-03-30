@@ -1,0 +1,38 @@
+<div class="main_hd">
+	<h2>入口管理</h2>
+</div>
+
+<div class="highlight_box" style="height:100px">
+	<div class="opr">
+		<a class="btn btn_primary btn_add" ui-sref="app.entrance.addHotspot(ctrl.entrance.id)">添加热点</a>
+		<a class="btn btn_primary btn_add" ng-click="app.entrance.pickCoordinate(ctrl.entrance.id)">提取坐标</a>
+	</div>
+	<h4 class="title">入口名称：{{ctrl.entrance.title}}</h4>
+</div>
+
+<div class="frm_control_group gray_desc_item">
+	<h3>热点列表</h3>
+	<div class="table_wrp">
+		<table class="table">
+			<thead class="thead">
+				<tr>
+					<th class="table_cell">热点类型</th>
+					<th class="table_cell">X坐标</th>
+					<th class="table_cell">Y坐标</th>
+					<td class="table_cell" align="right">操作</td>
+				</tr>
+			</thead>
+			<tbody class="tbody">
+				<tr ng-repeat="hotspot in ctrl.hotspots">
+					<td class="table_cell time">{{hotspot.type}}</td>
+					<td class="table_cell time">{{hotspot.x}}</td>
+					<td class="table_cell time">{{hotspot.y}}</td>
+					<td class="table_cell" align="right">
+						<a ui-sref="app.entrance.editHotspot({id: hotspot.id})">编辑</a>&nbsp;&nbsp;
+						<a ng-click="ctrl.deleteHotspot({id: hotspot.id})">删除</a>&nbsp;&nbsp;						
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
