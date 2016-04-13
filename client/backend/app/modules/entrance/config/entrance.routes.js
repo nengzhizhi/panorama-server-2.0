@@ -95,7 +95,7 @@
 					templateUrl: 'modules/entrance/views/hotspot.html',
 					controllerAs: 'ctrl',
 					controller: function ($state, hotspot, EntranceService) {
-						this.hotspot = hotspot;
+						this.hotspot = hotspot || {};
 
 						this.formFields = EntranceService.getHotspotFormFields();
 						this.formOptions = {};
@@ -118,9 +118,8 @@
 					url: '/editHotspot/:id',
 					templateUrl: 'modules/entrance/views/hotspot.html',
 					controllerAs: 'ctrl',
-					controller: function ($state, hotspot, EntranceService) {
-						this.hotspot = hotspot;
-
+					controller: function ($state, hotspot, EntranceService, $stateParams) {
+						this.hotspot = hotspot || {};
 						this.formFields = EntranceService.getHotspotFormFields();
 						this.formOptions = {};
 

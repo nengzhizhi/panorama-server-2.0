@@ -30,4 +30,18 @@ module.exports = function (app) {
       })
     })
   }
+
+
+  // var TreasureModel = app.models.Treasure;
+
+  // var start_time = new Date() - 1000000;
+  // var end_time = start_time + 2000000;
+
+  // TreasureModel.findOrCreate({
+  //   title: '烤鱼优惠券',
+  //   thumb_url: 'http://xxxx.png',
+  //   start_time: start_time,
+  //   end_time: end_time,
+  //   quantity: 1000
+  // })
 }

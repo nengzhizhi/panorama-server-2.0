@@ -1,0 +1,29 @@
+{
+  "name": "TreasureExchange",
+  "plural": "te",
+  "base": "PersistedModel",
+  "properties": {
+    "key": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "client": {
+      "type": "string"
+    },
+    "treasureId": {
+      "type": "objectId"
+    }
+  },
+  "relations": {
+    "treasure": {
+      "type": "belongsTo",
+      "model": "Treasure",
+      "foreignKey": "treasureId",
+      "required": true
+    }
+  },
+  "acls": [],
+  "method": []
+}

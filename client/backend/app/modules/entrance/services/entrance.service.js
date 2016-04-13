@@ -31,7 +31,9 @@
 
       this.getHotspots = function (entranceId) {
         return Hotspot.find({
-          entranceId: entranceId
+          filter: {
+            where: { entranceId: entranceId }
+          }
         }).$promise;
       }
 
@@ -110,11 +112,16 @@
             templateOptions: {
               label: '热点类型',
               options: [
-                {name: '居中图片', value: 'center_picture'},
-                {name: '居中视频', value: 'center_video'},
-                {name: '热点图片', value: 'hotspot_picture'},
-                {name: '热点视频', value: 'hotspot_video'},
-                {name: '微信红包', value: 'wx_hongbao'},
+                // {name: '居中图片', value: 'center_picture'},
+                // {name: '居中视频', value: 'center_video'},
+                // {name: '热点图片', value: 'hotspot_picture'},
+                // {name: '热点视频', value: 'hotspot_video'},
+                // {name: '微信红包', value: 'wx_hongbao'},
+                { name: '商品', value: 'merchandise' },
+                { name: '微信红包', value: 'weixin_hongbao' },
+                { name: '优惠券', value: 'coupon' },
+                { name: '描述介绍', value: 'description' },
+                { name: '退出点', value: 'exit_point' }                
               ],
               required: true
             }
@@ -123,32 +130,28 @@
             type: 'input',
             templateOptions: {
               label: 'X坐标',
-              required: true,
-              type: 'input'
+              required: true
             }
           }, {
             key: 'y',
             type: 'input',
             templateOptions: {
               label: 'Y坐标',
-              required: true,
-              type: 'input'
+              required: true
             }
           }, {
             key: 'radius',
             type: 'input',
             templateOptions: {
               label: '热点半径',
-              required: true,
-              type: 'input'
+              required: true
             }
           }, {
             key: 'resource',
-            type: 'input',
+            type: 'textarea',
             templateOptions: {
               label: '热点素材',
-              required: true,
-              type: 'input'
+              required: true
             }
           }
         ]

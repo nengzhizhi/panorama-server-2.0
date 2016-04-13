@@ -4,8 +4,8 @@
 
 <div class="highlight_box" style="height:100px">
 	<div class="opr">
-		<a class="btn btn_primary btn_add" ui-sref="app.entrance.addHotspot(ctrl.entrance.id)">添加热点</a>
-		<a class="btn btn_primary btn_add" ng-click="app.entrance.pickCoordinate(ctrl.entrance.id)">提取坐标</a>
+		<a class="btn btn_primary btn_add" ui-sref="app.entrance.addHotspot({id: ctrl.entrance.id})">添加热点</a>
+		<a class="btn btn_primary btn_add" ng-click="app.entrance.pickCoordinate({id: ctrl.entrance.id})">提取坐标</a>
 	</div>
 	<h4 class="title">入口名称：{{ctrl.entrance.title}}</h4>
 </div>

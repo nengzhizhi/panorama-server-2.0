@@ -12,11 +12,11 @@
       'formly',
       'ui.router',
       'lbServices',
-      //'datePicker',
+      'angular-datepicker',
       'monospaced.qrcode',
       'com.module.core',
       'com.module.users',
       'com.module.entrance',
-      'com.module.hotspot'
+      'com.module.treasure'
     ])
 })();

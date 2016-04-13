@@ -3,6 +3,9 @@
   "plural": "hotspot",
   "base": "PersistedModel",
   "properties": {
+    "radius": {
+      "type": "number"
+    }    
   },
   "relations": {
     "entrance": {

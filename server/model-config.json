@@ -40,5 +40,13 @@
   "Hotspot": {
     "dataSource": "mongodb",
     "public": true
-  }  
+  },
+  "Treasure": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "TreasureExchange": {
+    "dataSource": "mongodb",
+    "public": true
+  }
 }

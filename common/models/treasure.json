@@ -1,0 +1,26 @@
+{
+  "name": "Treasure",
+  "plural": "treasure",
+  "base": "PersistedModel",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "thumbnail": {
+      "type": "string"
+    },    
+    "start_time": {
+      "type": "number"
+    },
+    "end_time": {
+      "type": "number"
+    },
+    "quantity": {
+      "type": "number"
+    }
+  },
+  "relations": {
+  },
+  "acls": [],
+  "method": []
+}
